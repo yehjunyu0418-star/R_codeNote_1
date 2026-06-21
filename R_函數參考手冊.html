@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>R 函數參考手冊</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Noto+Serif+TC:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #fafaf8;
+    --surface: #ffffff;
+    --border: #e2e0da;
+    --accent: #2c5f8a;
+    --accent-light: #e8f1f8;
+    --code-bg: #f3f4f2;
+    --code-border: #d6d4ce;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --tag-bg: #edf2f7;
+    --section-colors: #2c5f8a, #3a7d6e, #6b4f9e, #8a5c2c, #7a3535, #2c6b4f, #5c5c2c, #2c5c5c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'IBM Plex Sans', 'Noto Serif TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.65;
+    padding: 0 0 60px 0;
+  }
+
+  header {
+    background: var(--accent);
+    color: white;
+    padding: 36px 48px 28px;
+    position: relative;
+  }
+  header h1 {
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: .3px;
+    font-family: 'IBM Plex Sans', sans-serif;
+  }
+  header p {
+    margin-top: 6px;
+    font-size: 13px;
+    opacity: .8;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 4px;
+    padding: 2px 10px;
+    font-size: 11px;
+    margin-top: 10px;
+    margin-right: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: .5px;
+  }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 32px; }
+
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 32px 0 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+  }
+  .toc-title {
+    width: 100%;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .toc a {
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--accent);
+    padding-bottom: 1px;
+    white-space: nowrap;
+  }
+  .toc a:hover { border-bottom-style: solid; }
+
+  section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .section-header {
+    padding: 14px 24px;
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 28px; height: 28px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+    color: white;
+  }
+
+  .fn-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0;
+  }
+
+  .fn-card {
+    padding: 16px 20px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .fn-card:hover { background: var(--accent-light); }
+
+  .fn-name {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 4px;
+    padding: 3px 8px;
+    display: inline-block;
+    margin-bottom: 6px;
+    word-break: break-all;
+  }
+  .fn-pkg {
+    font-size: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+    color: white;
+    background: #888;
+    border-radius: 3px;
+    padding: 1px 5px;
+    margin-left: 5px;
+    vertical-align: middle;
+  }
+  .fn-desc {
+    font-size: 13px;
+    color: #333;
+    margin-bottom: 7px;
+    line-height: 1.55;
+  }
+  .fn-example {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 4px;
+    padding: 6px 10px;
+    color: #2d2d2d;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.6;
+  }
+  .comment { color: #6b7280; }
+  .kw { color: #1d4ed8; font-weight: 600; }
+  .str { color: #7c3aed; }
+  .fn { color: #0369a1; }
+  .num { color: #b45309; }
+
+  .s1 { background: #2c5f8a; }
+  .s2 { background: #3a7d6e; }
+  .s3 { background: #6b4f9e; }
+  .s4 { background: #8a5c2c; }
+  .s5 { background: #7a3535; }
+  .s6 { background: #2c6b4f; }
+  .s7 { background: #5c5c2c; }
+  .s8 { background: #2c5c5c; }
+  .s9 { background: #4a3060; }
+  .s10 { background: #1a5f3f; }
+  .s11 { background: #503a1a; }
+  .s12 { background: #3a1a4a; }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 40px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  @media print {
+    body { background: white; }
+    header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-icon { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .fn-pkg { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>R 函數參考手冊</h1>
+    <p>次級資料分析與量化研究 · 依據課堂語法整理</p>
+    <div>
+      <span class="badge">Base R</span>
+      <span class="badge">tidyverse / dplyr</span>
+      <span class="badge">ggplot2</span>
+      <span class="badge">haven · psych · car · gtsummary</span>
+      <span class="badge">stargazer · flextable · patchwork</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="toc">
+    <div class="toc-title">📑 快速導覽</div>
+    <a href="#s1">基本操作與設定</a>
+    <a href="#s2">套件管理</a>
+    <a href="#s3">資料結構與檢視</a>
+    <a href="#s4">資料載入與輸出</a>
+    <a href="#s5">描述統計函數</a>
+    <a href="#s6">資料存取與篩選</a>
+    <a href="#s7">資料清理與轉換</a>
+    <a href="#s8">因子變項</a>
+    <a href="#s9">Base R 繪圖</a>
+    <a href="#s10">ggplot2 繪圖</a>
+    <a href="#s11">推論統計與假設檢定</a>
+    <a href="#s12">迴歸分析</a>
+    <a href="#s13">信效度分析</a>
+    <a href="#s14">表格輸出套件</a>
+    <a href="#s15">數學函數</a>
+    <a href="#s16">流程控制</a>
+  </div>
+
+  <!-- ===== 1. 基本操作與設定 ===== -->
+  <section id="s1">
+    <div class="section-header">
+      <div class="section-icon s1">⚙</div>
+      基本操作與設定
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">&lt;-</div>
+        <div class="fn-desc">賦值運算子，將右側的值儲存到左側的物件名稱中</div>
+        <div class="fn-example"><span class="fn">x</span> <span class="kw">&lt;-</span> <span class="num">5</span>
+<span class="fn">net_income</span> <span class="kw">&lt;-</span> income <span class="kw">-</span> taxes</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">rm()</div>
+        <div class="fn-desc">移除物件。<code>rm(list = ls())</code> 清空整個環境中所有物件</div>
+        <div class="fn-example"><span class="fn">rm</span>(x)                    <span class="comment"># 移除單一物件</span>
+<span class="fn">rm</span>(list = <span class="fn">ls</span>())         <span class="comment"># 清空全部</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">getwd() / setwd()</div>
+        <div class="fn-desc">取得或設定目前的工作路徑（Working Directory），影響讀取/儲存檔案的預設位置</div>
+        <div class="fn-example"><span class="fn">getwd</span>()
+<span class="fn">setwd</span>(<span class="str">"/Users/joe/Desktop"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">c()</div>
+        <div class="fn-desc">建立向量（vector），將多個值串接在一起</div>
+        <div class="fn-example">age <span class="kw">&lt;-</span> <span class="fn">c</span>(<span class="num">28</span>, <span class="num">48</span>, <span class="num">47</span>, <span class="num">71</span>)
+<span class="fn">c</span>(<span class="str">"apple"</span>, <span class="str">"banana"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">: 冒號運算子</div>
+        <div class="fn-desc">快速建立整數序列，起始值到結束值（含兩端）</div>
+        <div class="fn-example"><span class="num">1</span>:<span class="num">5</span>         <span class="comment"># 得到 1 2 3 4 5</span>
+<span class="num">5</span>:<span class="num">1</span>         <span class="comment"># 得到 5 4 3 2 1</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">seq()</div>
+        <div class="fn-desc">建立自訂的等差數列，可以設定間隔（by）或總長度（length.out）</div>
+        <div class="fn-example"><span class="fn">seq</span>(<span class="num">0</span>, <span class="num">1</span>, by = <span class="num">0.1</span>)     <span class="comment"># 0 0.1 ... 1</span>
+<span class="fn">seq</span>(<span class="num">0</span>, <span class="num">3.99</span>, by = <span class="num">0.01</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">matrix()</div>
+        <div class="fn-desc">建立矩陣，可指定列數（nrow）、欄數（ncol），以及排列方向（byrow）</div>
+        <div class="fn-example"><span class="fn">matrix</span>(<span class="num">1</span>:<span class="num">6</span>, nrow = <span class="num">2</span>, ncol = <span class="num">3</span>)
+<span class="fn">matrix</span>(ncol = <span class="num">5</span>, nrow = <span class="num">1000</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">data.frame()</div>
+        <div class="fn-desc">建立資料框架，不同欄位可以是不同資料種類（數值、字元等）</div>
+        <div class="fn-example">df <span class="kw">&lt;-</span> <span class="fn">data.frame</span>(age, purchase)
+df2 <span class="kw">&lt;-</span> <span class="fn">data.frame</span>(x = <span class="num">1</span>:<span class="num">3</span>, y = <span class="fn">c</span>(<span class="str">"a"</span>,<span class="str">"b"</span>,<span class="str">"c"</span>))</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">cbind() / rbind()</div>
+        <div class="fn-desc">將多個向量或資料框架依欄（column）或列（row）方向合併</div>
+        <div class="fn-example"><span class="fn">cbind</span>(Freq = t1, Percent = p1)  <span class="comment"># 欄合併</span>
+<span class="fn">rbind</span>(df1, df2)               <span class="comment"># 列合併</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">set.seed()</div>
+        <div class="fn-desc">設定亂數種子，確保每次執行隨機運算時結果可重現</div>
+        <div class="fn-example"><span class="fn">set.seed</span>(<span class="num">1224</span>)
+X <span class="kw">&lt;-</span> <span class="fn">sample</span>(<span class="num">1</span>:<span class="num">100</span>, <span class="num">30</span>, <span class="kw">TRUE</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">? / help()</div>
+        <div class="fn-desc">查詢函數的說明文件，在 RStudio 的 Help 分頁中顯示</div>
+        <div class="fn-example">?mean
+<span class="fn">help</span>(ggplot)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">sprintf()</div>
+        <div class="fn-desc">格式化字串輸出，類似 C 的 printf。常用於設定數字的小數位數格式</div>
+        <div class="fn-example"><span class="fn">sprintf</span>(<span class="str">"%.1f"</span>, <span class="num">3.1416</span>)   <span class="comment"># "3.1"</span>
+<span class="fn">sprintf</span>(<span class="str">"R² = %.2f"</span>, <span class="num">0.856</span>)</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 2. 套件管理 ===== -->
+  <section id="s2">
+    <div class="section-header">
+      <div class="section-icon s2">📦</div>
+      套件管理
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">install.packages()</div>
+        <div class="fn-desc">從 CRAN 下載並安裝套件。套件名稱需加雙引號。每台電腦只需安裝一次</div>
+        <div class="fn-example"><span class="fn">install.packages</span>(<span class="str">"ggplot2"</span>)
+<span class="fn">install.packages</span>(<span class="fn">c</span>(<span class="str">"haven"</span>, <span class="str">"dplyr"</span>))</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">library()</div>
+        <div class="fn-desc">將已安裝的套件載入至目前的 R 工作階段。每次開啟 R 都需要重新執行</div>
+        <div class="fn-example"><span class="fn">library</span>(ggplot2)
+<span class="fn">library</span>(haven)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">if(!require()) {install...}</div>
+        <div class="fn-desc">在 R Markdown 中安全安裝套件的寫法：若套件未安裝則安裝，否則跳過</div>
+        <div class="fn-example"><span class="kw">if</span>(!<span class="fn">require</span>(<span class="str">"ggplot2"</span>)) {
+  <span class="fn">install.packages</span>(<span class="str">"ggplot2"</span>)
+}
+<span class="fn">library</span>(ggplot2)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">p_load() <span class="fn-pkg">pacman</span></div>
+        <div class="fn-desc">一次載入多個套件；若尚未安裝則自動安裝後再載入</div>
+        <div class="fn-example"><span class="fn">library</span>(pacman)
+<span class="fn">p_load</span>(haven, dplyr, psych, ggplot2)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">data()</div>
+        <div class="fn-desc">將 R 或已載入套件中的內建資料集載入到工作環境</div>
+        <div class="fn-example"><span class="fn">data</span>(msleep)
+<span class="fn">data</span>(<span class="str">"penguins"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">available.packages()</div>
+        <div class="fn-desc">列出 CRAN 上所有可安裝的套件。可搭配 nrow() 計算總數</div>
+        <div class="fn-example"><span class="fn">nrow</span>(<span class="fn">available.packages</span>())</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 3. 資料結構與檢視 ===== -->
+  <section id="s3">
+    <div class="section-header">
+      <div class="section-icon s3">🔍</div>
+      資料結構與檢視
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">View()</div>
+        <div class="fn-desc">在 RStudio 中開啟試算表式的資料瀏覽視窗</div>
+        <div class="fn-example"><span class="fn">View</span>(msleep)
+<span class="fn">View</span>(penguins)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">head() / tail()</div>
+        <div class="fn-desc">顯示資料前幾列或後幾列。預設為 6 列，可用第二個參數指定列數</div>
+        <div class="fn-example"><span class="fn">head</span>(msleep)
+<span class="fn">head</span>(msleep, <span class="num">2</span>)    <span class="comment"># 只看前兩列</span>
+<span class="fn">tail</span>(df, <span class="num">10</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">dim() / nrow() / ncol()</div>
+        <div class="fn-desc">回傳資料框架的「列數×欄數」；或分別取得列數、欄數</div>
+        <div class="fn-example"><span class="fn">dim</span>(msleep)    <span class="comment"># c(83, 11)</span>
+<span class="fn">nrow</span>(msleep)   <span class="comment"># 83</span>
+<span class="fn">ncol</span>(msleep)   <span class="comment"># 11</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">str()</div>
+        <div class="fn-desc">顯示資料框架的結構：每個變項的名稱、資料種類（chr/num/int/Factor）及前幾個值</div>
+        <div class="fn-example"><span class="fn">str</span>(msleep)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">names() / row.names()</div>
+        <div class="fn-desc">取得資料框架的欄位名稱向量（names）或列名稱（row.names）</div>
+        <div class="fn-example"><span class="fn">names</span>(airquality)
+<span class="fn">row.names</span>(msleep)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">class()</div>
+        <div class="fn-desc">回傳物件的資料種類，例如 "numeric"、"character"、"data.frame"、"factor" 等</div>
+        <div class="fn-example"><span class="fn">class</span>(x)            <span class="comment"># "numeric"</span>
+<span class="fn">class</span>(msleep)       <span class="comment"># "tbl_df"</span>
+<span class="fn">class</span>(penguins$sex) <span class="comment"># "factor"</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">summary()</div>
+        <div class="fn-desc">對資料框架輸出各變項的摘要統計；對模型物件則輸出模型結果報表</div>
+        <div class="fn-example"><span class="fn">summary</span>(msleep)     <span class="comment"># 資料摘要</span>
+<span class="fn">summary</span>(lm1)        <span class="comment"># 迴歸報表</span>
+<span class="fn">summary</span>(aov_result) <span class="comment"># ANOVA報表</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">complete.cases()</div>
+        <div class="fn-desc">回傳邏輯向量，標記資料框架中沒有任何 NA 的列（完整觀察值）</div>
+        <div class="fn-example">df_clean <span class="kw">&lt;-</span> msleep[<span class="fn">complete.cases</span>(msleep), ]
+<span class="fn">sum</span>(!<span class="fn">complete.cases</span>(msleep)) <span class="comment"># NA列數</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">is.na() / sum(is.na())</div>
+        <div class="fn-desc">檢查每個元素是否為遺漏值（NA）；搭配 sum() 計算 NA 的總數</div>
+        <div class="fn-example"><span class="fn">is.na</span>(msleep$sleep_rem)
+<span class="fn">sum</span>(<span class="fn">is.na</span>(msleep$sleep_rem))  <span class="comment"># NA個數</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 4. 資料載入與輸出 ===== -->
+  <section id="s4">
+    <div class="section-header">
+      <div class="section-icon s4">💾</div>
+      資料載入與輸出
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">read_sav() <span class="fn-pkg">haven</span></div>
+        <div class="fn-desc">讀取 SPSS 格式（.sav）的資料檔</div>
+        <div class="fn-example"><span class="fn">library</span>(haven)
+data <span class="kw">&lt;-</span> <span class="fn">read_sav</span>(<span class="str">"tscs2023q2.sav"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">read_dta() <span class="fn-pkg">haven</span></div>
+        <div class="fn-desc">讀取 Stata 格式（.dta）的資料檔，可指定 encoding</div>
+        <div class="fn-example">data <span class="kw">&lt;-</span> <span class="fn">read_dta</span>(<span class="str">"tscs231.dta"</span>)
+data <span class="kw">&lt;-</span> <span class="fn">read_dta</span>(<span class="str">"data.dta"</span>, encoding = <span class="str">"utf-8"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">write_sav() <span class="fn-pkg">haven</span></div>
+        <div class="fn-desc">將 R 資料框架輸出儲存為 SPSS .sav 格式</div>
+        <div class="fn-example"><span class="fn">write_sav</span>(rel, <span class="str">"rel.sav"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">subset()</div>
+        <div class="fn-desc">篩選資料框架的列或選取特定欄位（select 參數）。可依條件過濾觀察值</div>
+        <div class="fn-example">sub <span class="kw">&lt;-</span> <span class="fn">subset</span>(religion, 
+  select = <span class="fn">c</span>(v1, v2y, v6, v9))
+<span class="fn">subset</span>(airquality, Temp > <span class="num">90</span>)</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 5. 描述統計 ===== -->
+  <section id="s5">
+    <div class="section-header">
+      <div class="section-icon s5">📊</div>
+      描述統計函數
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">mean()</div>
+        <div class="fn-desc">計算平均數。若資料含 NA，需加 <code>na.rm = TRUE</code> 才能得到結果</div>
+        <div class="fn-example"><span class="fn">mean</span>(msleep$sleep_total)
+<span class="fn">mean</span>(msleep$sleep_rem, na.rm = <span class="kw">TRUE</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">median()</div>
+        <div class="fn-desc">計算中位數（第 50 百分位數）。同樣支援 na.rm</div>
+        <div class="fn-example"><span class="fn">median</span>(msleep$sleep_total)
+<span class="fn">median</span>(data$age, na.rm = <span class="kw">TRUE</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">sd() / var()</div>
+        <div class="fn-desc">計算標準差（sd）或變異量（var），分母為 n-1（樣本統計量）</div>
+        <div class="fn-example"><span class="fn">sd</span>(msleep$sleep_total)
+<span class="fn">var</span>(msleep$sleep_total)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">max() / min()</div>
+        <div class="fn-desc">取得向量中的最大值或最小值</div>
+        <div class="fn-example"><span class="fn">max</span>(airquality$Temp)   <span class="comment"># 97</span>
+<span class="fn">min</span>(msleep$sleep_total)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">sum()</div>
+        <div class="fn-desc">計算向量元素的總和。搭配邏輯判斷可計算符合條件的個數</div>
+        <div class="fn-example"><span class="fn">sum</span>(msleep$sleep_total > <span class="num">8</span>)  <span class="comment"># 計次</span>
+<span class="fn">sum</span>(<span class="fn">is.na</span>(msleep$sleep_rem)) <span class="comment"># NA個數</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">quantile()</div>
+        <div class="fn-desc">計算分位數，預設輸出 0%, 25%, 50%, 75%, 100%</div>
+        <div class="fn-example"><span class="fn">quantile</span>(msleep$sleep_total)
+<span class="fn">quantile</span>(data$age, <span class="num">0.9</span>, na.rm=<span class="kw">T</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">table()</div>
+        <div class="fn-desc">建立次數分配表。加第二個變項則建立交叉表。<code>useNA="ifany"</code> 可顯示遺漏值</div>
+        <div class="fn-example"><span class="fn">table</span>(msleep$vore)
+<span class="fn">table</span>(msleep$vore, msleep$conservation)
+<span class="fn">table</span>(data$sex, useNA = <span class="str">"ifany"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">proportions() / prop.table()</div>
+        <div class="fn-desc">計算 table 物件各格的比例。<code>margin=1</code> 依列、<code>margin=2</code> 依欄計算</div>
+        <div class="fn-example"><span class="fn">proportions</span>(<span class="fn">table</span>(msleep$vore))
+<span class="fn">prop.table</span>(<span class="fn">table</span>(data$a1))
+<span class="fn">proportions</span>(<span class="fn">table</span>(x, y), margin = <span class="num">1</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">addmargins()</div>
+        <div class="fn-desc">在 table 或交叉表的邊緣加上加總列/欄（Sum）</div>
+        <div class="fn-example"><span class="fn">addmargins</span>(<span class="fn">round</span>(<span class="fn">prop.table</span>(tbl), <span class="num">4</span>))</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">round()</div>
+        <div class="fn-desc">四捨五入至指定小數位數</div>
+        <div class="fn-example"><span class="fn">round</span>(<span class="num">3.14159</span>, <span class="num">2</span>)    <span class="comment"># 3.14</span>
+<span class="fn">round</span>(<span class="fn">proportions</span>(t1) * <span class="num">100</span>, <span class="num">2</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">aggregate()</div>
+        <div class="fn-desc">依分組計算統計值，語法為 <code>y ~ 分組變項</code>，第三個參數為統計函數</div>
+        <div class="fn-example"><span class="fn">aggregate</span>(sleep_total ~ vore,
+  data = msleep, <span class="fn">mean</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">cor() / cov()</div>
+        <div class="fn-desc">計算相關係數或共變量。可對整個資料框架計算相關矩陣。<code>use</code> 參數處理 NA</div>
+        <div class="fn-example"><span class="fn">cor</span>(data$age, data$scale,
+  use = <span class="str">"pairwise.complete.obs"</span>)
+<span class="fn">cor</span>(economics[, <span class="fn">c</span>(<span class="num">2</span>,<span class="num">4</span>:<span class="num">6</span>)])</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 6. 資料存取與篩選 ===== -->
+  <section id="s6">
+    <div class="section-header">
+      <div class="section-icon s6">🎯</div>
+      資料存取與篩選
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">$ 欄位存取</div>
+        <div class="fn-desc">用 $ 符號存取資料框架中特定欄位（變項），回傳一個向量</div>
+        <div class="fn-example">msleep$sleep_total
+<span class="fn">mean</span>(airquality$Temp)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">[ ] 索引</div>
+        <div class="fn-desc">用 <code>[列, 欄]</code> 存取資料框架的特定位置。省略一方則取得整列或整欄</div>
+        <div class="fn-example">airquality[<span class="num">5</span>, <span class="num">4</span>]        <span class="comment"># 第5列第4欄</span>
+airquality[<span class="num">5</span>, ]         <span class="comment"># 第5列全部</span>
+airquality[, <span class="fn">c</span>(<span class="num">2</span>,<span class="num">4</span>,<span class="num">6</span>)]   <span class="comment"># 第2,4,6欄</span>
+airquality[, <span class="kw">-</span><span class="num">2</span>]         <span class="comment"># 排除第2欄</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">which() / which.max()</div>
+        <div class="fn-desc"><code>which()</code> 回傳符合條件的元素索引；<code>which.max()</code> 回傳最大值的索引位置</div>
+        <div class="fn-example"><span class="fn">which</span>(airquality$Temp > <span class="num">90</span>)
+<span class="fn">which.max</span>(msleep$sleep_total)
+msleep[<span class="fn">which.max</span>(msleep$sleep_total), ]</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">邏輯篩選</div>
+        <div class="fn-desc">用邏輯條件篩選資料列；<code>&amp;</code> 為且，<code>|</code> 為或，<code>%in%</code> 為「是否包含於」</div>
+        <div class="fn-example">airquality[airquality$Temp > <span class="num">90</span>, ]
+msleep[msleep$vore == <span class="str">"carni"</span>, ]
+data[data$a8 %<span class="kw">in</span>% <span class="fn">c</span>(<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>), ]
+msleep$sleep_total > <span class="num">8</span> & msleep$bodywt > <span class="num">50</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">select() <span class="fn-pkg">dplyr</span></div>
+        <div class="fn-desc">選取資料框架中特定欄位，可用欄位名稱或範圍（如 d15a:d15j）</div>
+        <div class="fn-example">sub_data <span class="kw">&lt;-</span> <span class="fn">select</span>(.data = data,
+  d15_an, d15_b, d15_c)</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 7. 資料清理與轉換 ===== -->
+  <section id="s7">
+    <div class="section-header">
+      <div class="section-icon s7">🔧</div>
+      資料清理與轉換
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">mutate() <span class="fn-pkg">dplyr</span></div>
+        <div class="fn-desc">新增或修改資料框架中的欄位，可一次處理多個變項，常與 ifelse、case_when 搭配</div>
+        <div class="fn-example">data <span class="kw">&lt;-</span> <span class="fn">mutate</span>(.data = data,
+  birth = <span class="fn">ifelse</span>(a2y >= <span class="num">0</span>, a2y, <span class="kw">NA</span>),
+  age = <span class="num">112</span> - birth + <span class="num">1</span>,
+  male = <span class="fn">ifelse</span>(a1 == <span class="num">1</span>, <span class="num">1</span>, <span class="num">0</span>))</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">ifelse()</div>
+        <div class="fn-desc">條件判斷：若條件為 TRUE 回傳第一個值，否則回傳第二個值。可嵌套使用</div>
+        <div class="fn-example"><span class="fn">ifelse</span>(a2y >= <span class="num">0</span>, a2y, <span class="kw">NA</span>)
+<span class="fn">ifelse</span>(a1 == <span class="num">1</span>, <span class="num">1</span>, <span class="num">0</span>)
+<span class="fn">ifelse</span>(income &lt; <span class="num">0</span>, <span class="kw">NA</span>, income)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">case_when() <span class="fn-pkg">dplyr</span></div>
+        <div class="fn-desc">多條件對應重新編碼，適用於複雜的分類。語法為 <code>條件 ~ 新值</code></div>
+        <div class="fn-example">edu <span class="kw">&lt;-</span> <span class="fn">case_when</span>(
+  b1 %<span class="kw">in</span>% <span class="fn">c</span>(<span class="num">1</span>:<span class="num">5</span>)  ~ <span class="num">1</span>,  <span class="comment"># 國小以下</span>
+  b1 %<span class="kw">in</span>% <span class="fn">c</span>(<span class="num">6</span>:<span class="num">9</span>)  ~ <span class="num">2</span>,  <span class="comment"># 高中職</span>
+  b1 %<span class="kw">in</span>% <span class="fn">c</span>(<span class="num">10</span>:<span class="num">15</span>) ~ <span class="num">3</span>,  <span class="comment"># 專科</span>
+  b1 == <span class="num">22</span>        ~ <span class="kw">NA</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">recode() <span class="fn-pkg">car</span></div>
+        <div class="fn-desc">重新編碼，可直接指定新值對應舊值，支援轉換為因子變項（as.factor = T）</div>
+        <div class="fn-example">vore2 <span class="kw">&lt;-</span> <span class="fn">recode</span>(msleep$vore,
+  <span class="str">"'carni'='肉食性'; 'herbi'='草食性'"</span>,
+  as.factor = <span class="kw">T</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">as.numeric() / as.character() / as.logical()</div>
+        <div class="fn-desc">強制轉換資料種類。無法轉換時會產生 NA 及警告訊息</div>
+        <div class="fn-example"><span class="fn">as.numeric</span>(<span class="kw">TRUE</span>)         <span class="comment"># 1</span>
+<span class="fn">as.character</span>(<span class="num">3.14</span>)    <span class="comment"># "3.14"</span>
+<span class="fn">as.numeric</span>(data$age)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">as.data.frame() / as.matrix()</div>
+        <div class="fn-desc">在資料框架與矩陣之間轉換。tibble 轉換為 data.frame 可避免某些套件相容問題</div>
+        <div class="fn-example">penguins <span class="kw">&lt;-</span> <span class="fn">as.data.frame</span>(penguins)
+mat <span class="kw">&lt;-</span> <span class="fn">as.matrix</span>(airquality)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">as.factor()</div>
+        <div class="fn-desc">將向量轉換為因子變項（factor）</div>
+        <div class="fn-example">data$edu <span class="kw">&lt;-</span> <span class="fn">as.factor</span>(data$edu)
+msleep$vore2 <span class="kw">&lt;-</span> <span class="fn">as.factor</span>(msleep$vore)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">is.numeric() / is.character() / is.logical()</div>
+        <div class="fn-desc">檢查物件是否為指定的資料種類，回傳 TRUE 或 FALSE</div>
+        <div class="fn-example"><span class="fn">is.numeric</span>(<span class="num">3.14</span>)       <span class="comment"># TRUE</span>
+<span class="fn">is.character</span>(<span class="str">"hello"</span>)  <span class="comment"># TRUE</span>
+<span class="fn">is.logical</span>(<span class="kw">FALSE</span>)     <span class="comment"># TRUE</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">log()</div>
+        <div class="fn-desc">計算自然對數（底數 e）；可指定 base 參數改變底數。常用於對數轉換</div>
+        <div class="fn-example"><span class="fn">log</span>(100)                <span class="comment"># 自然對數</span>
+<span class="fn">log</span>(100, base = <span class="num">10</span>)    <span class="comment"># 常用對數</span>
+l_income <span class="kw">&lt;-</span> <span class="fn">log</span>(income + <span class="num">1</span>) <span class="comment"># 避免log(0)</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">trunc()</div>
+        <div class="fn-desc">截取數字的整數部分（無條件捨去小數）</div>
+        <div class="fn-example">temp <span class="kw">&lt;-</span> <span class="fn">trunc</span>(j4b5 / <span class="num">1000</span>)
+<span class="fn">trunc</span>(<span class="num">3.99</span>)  <span class="comment"># 3</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">t() 轉置</div>
+        <div class="fn-desc">將矩陣或資料框架進行轉置（列變欄、欄變列）</div>
+        <div class="fn-example">relt <span class="kw">&lt;-</span> <span class="fn">t</span>(rel)  <span class="comment"># 列變欄</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 8. 因子變項 ===== -->
+  <section id="s8">
+    <div class="section-header">
+      <div class="section-icon s8">🏷</div>
+      因子變項（factor）
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">factor()</div>
+        <div class="fn-desc">建立因子變項，可用 <code>levels</code> 指定類別及順序，<code>labels</code> 設定顯示名稱，<code>ordered=TRUE</code> 設定為有序（次序尺度）</div>
+        <div class="fn-example">smoke2 <span class="kw">&lt;-</span> <span class="fn">factor</span>(smoke,
+  levels = <span class="fn">c</span>(<span class="str">"Never"</span>,<span class="str">"Occasionally"</span>,
+             <span class="str">"Regularly"</span>,<span class="str">"Heavy"</span>),
+  ordered = <span class="kw">TRUE</span>)
+<span class="fn">factor</span>(sex, levels=<span class="fn">c</span>(<span class="num">2</span>,<span class="num">1</span>), labels=<span class="fn">c</span>(<span class="str">"女"</span>,<span class="str">"男"</span>))</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">levels()</div>
+        <div class="fn-desc">查看或修改因子變項的類別層級。可直接用 <code>[i] &lt;-</code> 修改特定類別名稱</div>
+        <div class="fn-example"><span class="fn">levels</span>(smoke2)              <span class="comment"># 查看</span>
+<span class="fn">levels</span>(smoke2)[<span class="num">5</span>] <span class="kw">&lt;-</span> <span class="str">"Invalid"</span>  <span class="comment"># 修改</span>
+<span class="fn">levels</span>(gender) <span class="kw">&lt;-</span> <span class="fn">c</span>(<span class="str">"雌性"</span>,<span class="str">"雄性"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">addNA()</div>
+        <div class="fn-desc">將 NA 加入因子變項的類別中，使其在 table() 中顯示為正式類別</div>
+        <div class="fn-example">smoke2 <span class="kw">&lt;-</span> <span class="fn">addNA</span>(smoke2)
+<span class="fn">table</span>(smoke2)  <span class="comment"># NA 現在會出現</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">relevel()</div>
+        <div class="fn-desc">更改因子變項的基準類別（reference level），用於迴歸分析中的虛擬變項設定</div>
+        <div class="fn-example">penguins$gender <span class="kw">&lt;-</span> <span class="fn">relevel</span>(
+  penguins$sex, ref = <span class="str">"male"</span>)
+msleep$vore2 <span class="kw">&lt;-</span> <span class="fn">relevel</span>(
+  <span class="fn">as.factor</span>(msleep$vore), ref = <span class="str">"herbi"</span>)</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 9. Base R 繪圖 ===== -->
+  <section id="s9">
+    <div class="section-header">
+      <div class="section-icon s9">📉</div>
+      Base R 繪圖
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">plot()</div>
+        <div class="fn-desc">通用繪圖函數；兩個向量產生散佈圖，模型物件產生診斷圖，<code>pch</code> 設定點的形狀</div>
+        <div class="fn-example"><span class="fn">plot</span>(msleep$sleep_total, msleep$sleep_rem)
+<span class="fn">plot</span>(msleep$sleep_total, msleep$sleep_rem,
+     pch = <span class="num">16</span>)
+<span class="fn">plot</span>(<span class="fn">TukeyHSD</span>(m)) <span class="comment"># Tukey 事後圖</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">hist()</div>
+        <div class="fn-desc">繪製直方圖，用於呈現數值變項的分佈</div>
+        <div class="fn-example"><span class="fn">hist</span>(msleep$sleep_total)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">boxplot()</div>
+        <div class="fn-desc">繪製箱型圖，可用 <code>y ~ 分組變項</code> 語法繪製分組比較</div>
+        <div class="fn-example"><span class="fn">boxplot</span>(sleep_total ~ vore, data = msleep)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">barplot()</div>
+        <div class="fn-desc">繪製長條圖，通常以 table() 的結果作為輸入</div>
+        <div class="fn-example"><span class="fn">barplot</span>(<span class="fn">table</span>(msleep$vore))</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">abline()</div>
+        <div class="fn-desc">在既有圖形上加入直線；<code>v</code> 為垂直線，<code>h</code> 為水平線</div>
+        <div class="fn-example"><span class="fn">abline</span>(v = <span class="num">0</span>)   <span class="comment"># 垂直線</span>
+<span class="fn">abline</span>(h = <span class="num">0</span>)   <span class="comment"># 水平線</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">polygon()</div>
+        <div class="fn-desc">在圖形上繪製填色的多邊形，常用於標示常態分配的特定區域</div>
+        <div class="fn-example"><span class="fn">polygon</span>(x = <span class="fn">c</span>(<span class="num">2</span>, xxx, <span class="num">3</span>),
+        y = <span class="fn">c</span>(<span class="num">0</span>, yyy, <span class="num">0</span>),
+        col = <span class="str">"blue"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">grid()</div>
+        <div class="fn-desc">在圖形上加入背景格線</div>
+        <div class="fn-example"><span class="fn">plot</span>(x, y, pch = <span class="num">16</span>)
+<span class="fn">grid</span>()</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">par(mfrow=)</div>
+        <div class="fn-desc">設定繪圖視窗的分割方式，<code>c(2,2)</code> 表示 2×2 的排列</div>
+        <div class="fn-example"><span class="fn">par</span>(mfrow = <span class="fn">c</span>(<span class="num">2</span>, <span class="num">2</span>))  <span class="comment"># 2x2 排列</span>
+<span class="fn">plot</span>(lm1)
+<span class="fn">par</span>(mfrow = <span class="fn">c</span>(<span class="num">1</span>, <span class="num">1</span>))  <span class="comment"># 恢復單圖</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">png() / pdf() / dev.off()</div>
+        <div class="fn-desc">將圖形輸出儲存為圖檔：先呼叫 png/pdf 開啟檔案，繪圖後用 dev.off() 關閉並儲存</div>
+        <div class="fn-example"><span class="fn">png</span>(<span class="str">"fig.png"</span>, width=<span class="num">600</span>, height=<span class="num">400</span>)
+<span class="fn">plot</span>(x, y)
+<span class="fn">dev.off</span>()
+
+<span class="fn">png</span>(<span class="str">"tukey.png"</span>, width=<span class="num">16</span>, height=<span class="num">9</span>,
+    units=<span class="str">"in"</span>, res=<span class="num">200</span>)</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 10. ggplot2 繪圖 ===== -->
+  <section id="s10">
+    <div class="section-header">
+      <div class="section-icon s10">🎨</div>
+      ggplot2 繪圖
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">ggplot() + aes()</div>
+        <div class="fn-desc">建立圖形基礎框架（data + aesthetics）：指定資料來源與 x/y 軸映射。接著用 + 加上 geom 圖層</div>
+        <div class="fn-example"><span class="fn">ggplot</span>(msleep, <span class="fn">aes</span>(x = sleep_total,
+                        y = sleep_rem)) +
+  <span class="fn">geom_point</span>()</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_point()</div>
+        <div class="fn-desc">散佈圖。可在 aes 中設定 colour/fill/size/shape，或直接在 geom 中設定固定值</div>
+        <div class="fn-example"><span class="fn">geom_point</span>()
+<span class="fn">geom_point</span>(size = <span class="num">2</span>)
+<span class="fn">geom_point</span>(<span class="fn">aes</span>(colour = species))</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_histogram()</div>
+        <div class="fn-desc">直方圖。<code>colour</code> 設定輪廓色，<code>fill</code> 設定填色，<code>binwidth</code> 設定箱寬</div>
+        <div class="fn-example"><span class="fn">geom_histogram</span>()
+<span class="fn">geom_histogram</span>(colour = <span class="str">"cyan4"</span>,
+               fill = <span class="str">"white"</span>,
+               binwidth = <span class="num">1</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_boxplot()</div>
+        <div class="fn-desc">箱型圖，展示中位數、四分位距與離群值。<code>width</code> 調整箱子寬度</div>
+        <div class="fn-example"><span class="fn">geom_boxplot</span>()
+<span class="fn">geom_boxplot</span>(width = <span class="num">.1</span>)
+<span class="fn">geom_boxplot</span>(<span class="fn">aes</span>(fill = species))</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_violin()</div>
+        <div class="fn-desc">小提琴圖，結合密度估計與箱型圖，呈現完整分佈形狀。<code>alpha</code> 調整透明度</div>
+        <div class="fn-example"><span class="fn">geom_violin</span>()
+<span class="fn">geom_violin</span>(alpha = <span class="num">.5</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_bar()</div>
+        <div class="fn-desc">長條圖（計次）。<code>fill</code> 填色、<code>position="dodge"</code> 分組並排</div>
+        <div class="fn-example"><span class="fn">geom_bar</span>(fill = <span class="str">"cyan3"</span>, colour = <span class="str">"navy"</span>)
+<span class="fn">geom_bar</span>(position = <span class="str">"dodge"</span>)
+<span class="fn">geom_bar</span>(width = <span class="num">.8</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_smooth()</div>
+        <div class="fn-desc">加入趨勢線。<code>method="lm"</code> 為線性迴歸線，<code>se=FALSE</code> 隱藏信賴區間帶</div>
+        <div class="fn-example"><span class="fn">geom_smooth</span>(method = <span class="str">"lm"</span>, se = <span class="kw">FALSE</span>)
+<span class="fn">geom_smooth</span>(method = <span class="str">"loess"</span>,
+            colour = <span class="str">"firebrick"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_text()</div>
+        <div class="fn-desc">在圖上加入文字標籤，<code>nudge_y</code> 調整文字位移，<code>size</code> 調整字體大小</div>
+        <div class="fn-example"><span class="fn">geom_text</span>(label = <span class="fn">rownames</span>(msleep),
+          nudge_y = <span class="num">.1</span>, size = <span class="num">3</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_segment()</div>
+        <div class="fn-desc">繪製線段，需在 aes 中指定起點 (x,y) 與終點 (xend, yend)</div>
+        <div class="fn-example"><span class="fn">geom_segment</span>(<span class="fn">aes</span>(xend = X,
+               yend = predicted),
+  colour = <span class="str">"grey70"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_errorbar()</div>
+        <div class="fn-desc">誤差棒，需指定 xmin/xmax（水平）或 ymin/ymax（垂直），<code>width</code> 設定端點寬度</div>
+        <div class="fn-example"><span class="fn">geom_errorbar</span>(<span class="fn">aes</span>(xmin = conf.low,
+               xmax = conf.high),
+  width = <span class="num">0.2</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_vline() / geom_hline()</div>
+        <div class="fn-desc">加入垂直或水平參考線，<code>linetype</code> 可設定為 "dashed"（虛線）等</div>
+        <div class="fn-example"><span class="fn">geom_vline</span>(xintercept = <span class="num">0</span>,
+           linetype = <span class="str">"dashed"</span>,
+           color = <span class="str">"red"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_jitter()</div>
+        <div class="fn-desc">將點加入隨機擾動避免重疊，常與箱型圖疊加使用，<code>alpha</code> 設定透明度</div>
+        <div class="fn-example"><span class="fn">geom_jitter</span>(size = <span class="num">0.5</span>, alpha = <span class="num">0.25</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">geom_qq() / geom_qq_line()</div>
+        <div class="fn-desc">Q-Q 常態機率圖，用 <code>aes(sample=)</code> 指定要檢驗的變項</div>
+        <div class="fn-example"><span class="fn">ggplot</span>(data, <span class="fn">aes</span>(sample = sleep_rem)) +
+  <span class="fn">geom_qq</span>() +
+  <span class="fn">geom_qq_line</span>()</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">stat_function()</div>
+        <div class="fn-desc">在圖上繪製數學函數的曲線，<code>fun</code> 指定函數，<code>args</code> 傳入參數</div>
+        <div class="fn-example"><span class="fn">stat_function</span>(fun = dnorm,
+  args = <span class="fn">list</span>(mean = <span class="num">1.5</span>, sd = <span class="num">1</span>),
+  colour = <span class="str">"cyan3"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">facet_wrap()</div>
+        <div class="fn-desc">依類別變項分面繪圖，<code>~ 變項名</code> 指定分面依據，<code>nrow</code>/<code>ncol</code> 設定排列方式</div>
+        <div class="fn-example"><span class="fn">facet_wrap</span>(~ species, nrow = <span class="num">3</span>)
+<span class="fn">facet_wrap</span>(~ species, ncol = <span class="num">2</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">labs()</div>
+        <div class="fn-desc">設定圖表標籤：<code>title</code>（標題）、<code>x</code>/<code>y</code>（軸標籤）、<code>subtitle</code>（副標題）</div>
+        <div class="fn-example"><span class="fn">labs</span>(x = <span class="str">"企鵝品種"</span>,
+     y = <span class="str">"體重（公克）"</span>,
+     title = <span class="str">"企鵝體重的箱型圖"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">theme() / theme_bw() / theme_minimal()</div>
+        <div class="fn-desc">設定圖表外觀主題。<code>theme(legend.position="none")</code> 隱藏圖例</div>
+        <div class="fn-example"><span class="fn">theme_bw</span>()           <span class="comment"># 黑白主題</span>
+<span class="fn">theme_minimal</span>()     <span class="comment"># 簡約主題</span>
+<span class="fn">theme_classic</span>()     <span class="comment"># 經典主題</span>
+<span class="fn">theme</span>(legend.position = <span class="str">"none"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">coord_flip()</div>
+        <div class="fn-desc">將 x 軸與 y 軸互換，使長條圖變為水平方向</div>
+        <div class="fn-example"><span class="fn">ggplot</span>(penguins, <span class="fn">aes</span>(x = species, fill = sex)) +
+  <span class="fn">geom_bar</span>(position = <span class="str">"dodge"</span>) +
+  <span class="fn">coord_flip</span>()</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">ggsave()</div>
+        <div class="fn-desc">儲存 ggplot2 圖形，支援 pdf/png/jpg/svg 等格式，可設定 dpi（解析度）</div>
+        <div class="fn-example"><span class="fn">ggsave</span>(<span class="str">"fig.png"</span>, myplot,
+       width = <span class="num">5</span>, height = <span class="num">5</span>, dpi = <span class="num">600</span>)
+<span class="fn">ggsave</span>(<span class="str">"fig.pdf"</span>, width = <span class="num">8</span>, height = <span class="num">4.5</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">ggpairs() <span class="fn-pkg">GGally</span></div>
+        <div class="fn-desc">繪製多變項的散佈圖矩陣，同時顯示相關係數、分佈圖與散佈圖</div>
+        <div class="fn-example"><span class="fn">ggpairs</span>(economics,
+  columns = <span class="fn">c</span>(<span class="str">"pce"</span>, <span class="str">"psavert"</span>),
+  progress = <span class="kw">FALSE</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">wrap_table() / wrap_flextable() <span class="fn-pkg">patchwork</span></div>
+        <div class="fn-desc">將表格物件（data.frame 或 flextable）轉為可與 ggplot2 用 + 或 / 合併的物件</div>
+        <div class="fn-example">g1 + <span class="fn">wrap_table</span>(t2p)
+g1 + <span class="fn">wrap_flextable</span>(t3, just=<span class="str">"center"</span>)
+g1 / g2    <span class="comment"># 上下排列</span>
+g1 + g2   <span class="comment"># 左右排列</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">showtext_auto() <span class="fn-pkg">showtext</span></div>
+        <div class="fn-desc">在 Mac 環境下讓 ggplot2 能正確顯示中文字體</div>
+        <div class="fn-example"><span class="fn">library</span>(showtext)
+<span class="fn">showtext_auto</span>()</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 11. 推論統計 ===== -->
+  <section id="s11">
+    <div class="section-header">
+      <div class="section-icon s11">📐</div>
+      推論統計與假設檢定
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">t.test()</div>
+        <div class="fn-desc">t 檢定。單樣本用 <code>mu</code> 設定假設值；雙樣本用 <code>y ~ x</code> 語法。<code>alternative</code> 設定單/雙尾</div>
+        <div class="fn-example"><span class="fn">t.test</span>(msleep$sleep_total, mu = <span class="num">8</span>)
+<span class="fn">t.test</span>(msleep$sleep_total, mu = <span class="num">8</span>,
+       alternative = <span class="str">"greater"</span>)
+<span class="fn">t.test</span>(body_mass_g ~ sex, data = penguins,
+       var.equal = <span class="kw">TRUE</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">var.test()</div>
+        <div class="fn-desc">檢驗兩組變異量是否相等（F 檢定），在進行雙樣本 t 檢定前使用</div>
+        <div class="fn-example"><span class="fn">var.test</span>(msleep$sleep_total[msleep$vore==<span class="str">"carni"</span>],
+         msleep$sleep_total[msleep$vore==<span class="str">"herbi"</span>])
+<span class="fn">var.test</span>(body_mass_g ~ sex, data = penguins)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">chisq.test()</div>
+        <div class="fn-desc">卡方獨立性檢定（用於交叉表）或適合度檢定（設定 <code>p</code> 期望比例）</div>
+        <div class="fn-example"><span class="fn">chisq.test</span>(t1)              <span class="comment"># 獨立性</span>
+<span class="fn">chisq.test</span>(x = data$male,
+           y = data$edu)
+<span class="fn">chisq.test</span>(<span class="fn">table</span>(data$male),
+           p = <span class="fn">c</span>(<span class="num">0.46</span>, <span class="num">0.54</span>))  <span class="comment"># 適合度</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">fisher.test()</div>
+        <div class="fn-desc">Fisher 精確檢定，適用於小樣本的 2×2 交叉表</div>
+        <div class="fn-example"><span class="fn">fisher.test</span>(TeaTasting,
+  alternative = <span class="str">"greater"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">shapiro.test()</div>
+        <div class="fn-desc">Shapiro-Wilk 常態分配檢定。H₀：資料符合常態分配</div>
+        <div class="fn-example"><span class="fn">shapiro.test</span>(msleep$sleep_rem[
+  msleep$vore2 == <span class="str">"草食性"</span>])</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">bartlett.test()</div>
+        <div class="fn-desc">Bartlett 變異量同質性檢定，對非常態分配較敏感</div>
+        <div class="fn-example"><span class="fn">bartlett.test</span>(sleep_rem ~ vore2,
+  data = msleep)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">leveneTest() <span class="fn-pkg">car</span></div>
+        <div class="fn-desc">Levene 檢定，用於多組（兩組以上）的變異量同質性檢定</div>
+        <div class="fn-example"><span class="fn">library</span>(car)
+<span class="fn">leveneTest</span>(sleep_rem ~ vore2,
+  data = msleep)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">aov()</div>
+        <div class="fn-desc">單因子變異數分析（ANOVA），語法與 t.test 相同（<code>y ~ x</code>），結果需用 summary() 查看</div>
+        <div class="fn-example">m <span class="kw">&lt;-</span> <span class="fn">aov</span>(sleep_rem ~ vore2, data = msleep)
+<span class="fn">summary</span>(m)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">TukeyHSD()</div>
+        <div class="fn-desc">Tukey 事後檢定，用於確認 ANOVA 後哪些組之間有顯著差異，只適用於 aov 物件</div>
+        <div class="fn-example"><span class="fn">TukeyHSD</span>(m)
+<span class="fn">plot</span>(<span class="fn">TukeyHSD</span>(m))</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">ScheffeTest() <span class="fn-pkg">DescTools</span></div>
+        <div class="fn-desc">Scheffe 事後檢定，適用於不等樣本組別的事後比較</div>
+        <div class="fn-example"><span class="fn">library</span>(DescTools)
+<span class="fn">ScheffeTest</span>(m)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">pairwise.t.test()</div>
+        <div class="fn-desc">成對 t 檢定，可設定 p 值校正方法（<code>p.adjust.method</code>），如 "bonferroni"</div>
+        <div class="fn-example"><span class="fn">pairwise.t.test</span>(data$scale, data$edu,
+  p.adjust.method = <span class="str">"bonferroni"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">kruskal.test()</div>
+        <div class="fn-desc">Kruskal-Wallis 無母數檢定，用於不符合常態分配時的多組比較</div>
+        <div class="fn-example"><span class="fn">kruskal.test</span>(sleep_rem ~ vore2,
+  data = msleep)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">oneway.test()</div>
+        <div class="fn-desc">Welch's ANOVA，適用於各組變異量不相同的情況。設定 <code>var.equal=FALSE</code></div>
+        <div class="fn-example"><span class="fn">oneway.test</span>(Petal.Length ~ Species,
+  data = iris, var.equal = <span class="kw">FALSE</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">cor.test()</div>
+        <div class="fn-desc">相關係數顯著性檢定，H₀：相關係數等於 0。<code>use</code> 設定 NA 處理方式</div>
+        <div class="fn-example"><span class="fn">cor.test</span>(msleep$sleep_total,
+  msleep$sleep_cycle,
+  use = <span class="str">"complete.obs"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">sample()</div>
+        <div class="fn-desc">從向量中隨機抽樣。第三個參數 <code>replace=TRUE/FALSE</code> 設定放回或不放回</div>
+        <div class="fn-example"><span class="fn">sample</span>(pa, n = <span class="num">10</span>, replace = <span class="kw">TRUE</span>)
+<span class="fn">sample</span>(pa, n = <span class="num">50</span>, replace = <span class="kw">FALSE</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">pnorm() / dnorm()</div>
+        <div class="fn-desc"><code>pnorm()</code> 計算常態分配的累積機率；<code>dnorm()</code> 計算常態分配的密度值</div>
+        <div class="fn-example"><span class="fn">pnorm</span>(<span class="num">1.96</span>)            <span class="comment"># ≈ 0.975</span>
+<span class="fn">dnorm</span>(x, mean=<span class="num">0</span>, sd=<span class="num">1</span>)</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 12. 迴歸分析 ===== -->
+  <section id="s12">
+    <div class="section-header">
+      <div class="section-icon s12">📈</div>
+      迴歸分析
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">lm()</div>
+        <div class="fn-desc">線性迴歸（OLS）。公式語法：<code>y ~ x1 + x2</code>；用 <code>.</code> 表示加入所有變項；<code>summary()</code> 顯示結果</div>
+        <div class="fn-example">lm1 <span class="kw">&lt;-</span> <span class="fn">lm</span>(sleep_rem ~ sleep_total,
+             data = msleep)
+<span class="fn">summary</span>(lm1)
+<span class="fn">lm</span>(salary ~ ., data = Salaries)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">glm()</div>
+        <div class="fn-desc">廣義線性模型。<code>family=binomial(link="logit")</code> 設定羅吉斯迴歸（Logit）</div>
+        <div class="fn-example">model <span class="kw">&lt;-</span> <span class="fn">glm</span>(accept ~ male + age + edu,
+  data = data,
+  family = <span class="fn">binomial</span>(link = <span class="str">"logit"</span>))
+<span class="fn">summary</span>(model)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">anova()</div>
+        <div class="fn-desc">對迴歸模型輸出 ANOVA 表格，或比較兩個巢套模型（nested models）的差異</div>
+        <div class="fn-example"><span class="fn">anova</span>(fit)           <span class="comment"># 單模型</span>
+<span class="fn">anova</span>(lm1, lm4)     <span class="comment"># 模型比較</span>
+<span class="fn">anova</span>(s1, s4, s2, s3) <span class="comment"># 多模型</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">predict()</div>
+        <div class="fn-desc">根據已建立的模型計算預測值（fitted values）</div>
+        <div class="fn-example">df <span class="kw">&lt;-</span> <span class="fn">mutate</span>(mydata,
+  predicted = <span class="fn">predict</span>(model))</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">vif() <span class="fn-pkg">car</span></div>
+        <div class="fn-desc">計算 VIF（變異數膨脹因素），用於診斷複迴歸中的共線性問題。GVIF^(1/(2*Df)) 用於多類別自變項</div>
+        <div class="fn-example"><span class="fn">library</span>(car)
+<span class="fn">vif</span>(lm_vif)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">lm.beta() <span class="fn-pkg">lm.beta</span></div>
+        <div class="fn-desc">計算迴歸模型的標準化係數（Beta），方便比較不同尺度自變項的相對重要性</div>
+        <div class="fn-example"><span class="fn">library</span>(lm.beta)
+beta <span class="kw">&lt;-</span> <span class="fn">lm.beta</span>(model2)$standardized.coefficients</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">tidy() <span class="fn-pkg">broom</span></div>
+        <div class="fn-desc">將模型結果（如 TukeyHSD）整理為整齊的資料框架，方便後續用 ggplot2 繪圖</div>
+        <div class="fn-example"><span class="fn">library</span>(broom)
+tukey_df <span class="kw">&lt;-</span> <span class="fn">tidy</span>(<span class="fn">TukeyHSD</span>(m))</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 13. 信效度 ===== -->
+  <section id="s13">
+    <div class="section-header">
+      <div class="section-icon s1">🔬</div>
+      信效度分析
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">alpha() <span class="fn-pkg">psych</span></div>
+        <div class="fn-desc">計算 Cronbach's α 內部一致性信度，輸入只包含量表題目的資料框架</div>
+        <div class="fn-example"><span class="fn">library</span>(psych)
+sub_data <span class="kw">&lt;-</span> <span class="fn">select</span>(data, d15_an, d15_b, d15_c)
+<span class="fn">alpha</span>(sub_data)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">principal() <span class="fn-pkg">psych</span></div>
+        <div class="fn-desc">主成分分析（PCA）。<code>nfactors</code> 設定因子數，<code>rotate="varimax"</code> 為正交轉軸</div>
+        <div class="fn-example">pca <span class="kw">&lt;-</span> <span class="fn">principal</span>(sub_data,
+  nfactors = <span class="num">5</span>,
+  rotate = <span class="str">"varimax"</span>,
+  scores = <span class="kw">TRUE</span>)</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 14. 表格輸出 ===== -->
+  <section id="s14">
+    <div class="section-header">
+      <div class="section-icon s2">📋</div>
+      表格輸出套件
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">stargazer() <span class="fn-pkg">stargazer</span></div>
+        <div class="fn-desc">產生描述統計或迴歸分析表格，可同時整合多個模型。<code>type="text"</code> 在 Console 顯示，<code>type="latex"</code> 輸出至 PDF</div>
+        <div class="fn-example"><span class="fn">stargazer</span>(penguins[,<span class="num">3</span>:<span class="num">6</span>],
+  type = <span class="str">"text"</span>,
+  summary.stat = <span class="fn">c</span>(<span class="str">"n"</span>,<span class="str">"mean"</span>,<span class="str">"sd"</span>))
+<span class="fn">stargazer</span>(lm1, lm3, lm4,
+  type = <span class="str">"text"</span>, no.space = <span class="kw">T</span>,
+  out = <span class="str">"table.txt"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">tbl_summary() <span class="fn-pkg">gtsummary</span></div>
+        <div class="fn-desc">自動產生整潔的描述統計表，支援 <code>by</code> 分組、<code>statistic</code> 自訂統計值、<code>include</code> 選擇變項</div>
+        <div class="fn-example"><span class="fn">tbl_summary</span>(penguins,
+  by = species,
+  include = <span class="fn">c</span>(body_mass_g, sex),
+  statistic = <span class="fn">all_continuous</span>() ~
+    <span class="str">"{mean} ({sd})"</span>,
+  missing_text = <span class="str">"(遺漏值)"</span>)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">add_overall() <span class="fn-pkg">gtsummary</span></div>
+        <div class="fn-desc">在 tbl_summary 產生的分組表格中，額外加入整體（Overall）描述統計欄位</div>
+        <div class="fn-example"><span class="fn">add_overall</span>(gt1)</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">flextable() / as_flextable() <span class="fn-pkg">flextable</span></div>
+        <div class="fn-desc">將資料框架或 table 物件轉為格式化的表格，可在 Word 文件中正常顯示</div>
+        <div class="fn-example"><span class="fn">flextable</span>(penguins[<span class="num">1</span>:<span class="num">3</span>, <span class="num">1</span>:<span class="num">4</span>])
+<span class="fn">as_flextable</span>(<span class="fn">table</span>(penguins$sex,
+  dnn = <span class="str">"企鵝性別"</span>))</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 15. 數學函數 ===== -->
+  <section id="s15">
+    <div class="section-header">
+      <div class="section-icon s4">🔢</div>
+      數學函數
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">abs() / sqrt()</div>
+        <div class="fn-desc">絕對值（abs）與平方根（sqrt）</div>
+        <div class="fn-example"><span class="fn">abs</span>(<span class="kw">-</span><span class="num">5</span>)     <span class="comment"># 5</span>
+<span class="fn">sqrt</span>(pi)   <span class="comment"># √π ≈ 1.772</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">exp() / log()</div>
+        <div class="fn-desc"><code>exp(x)</code> 計算自然指數 eˣ；<code>log(x)</code> 計算自然對數 ln(x)</div>
+        <div class="fn-example"><span class="fn">exp</span>(<span class="num">1</span>)             <span class="comment"># e ≈ 2.718</span>
+<span class="fn">log</span>(<span class="fn">exp</span>(<span class="num">1</span>))        <span class="comment"># 1</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">^ 冪次 / %% 餘數</div>
+        <div class="fn-desc"><code>a^x</code> 計算 a 的 x 次方；<code>x %% a</code> 計算除法餘數</div>
+        <div class="fn-example"><span class="num">2</span>^<span class="num">10</span>         <span class="comment"># 1024</span>
+<span class="num">17</span> <span class="kw">%%</span> <span class="num">5</span>       <span class="comment"># 2（餘數）</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">factorial() / choose()</div>
+        <div class="fn-desc"><code>factorial(n)</code> 計算 n 階乘（n!）；<code>choose(n,k)</code> 計算組合數 C(n,k)</div>
+        <div class="fn-example"><span class="fn">factorial</span>(<span class="num">5</span>)      <span class="comment"># 120</span>
+<span class="fn">choose</span>(<span class="num">10</span>, <span class="num">3</span>)   <span class="comment"># 120</span></div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">prod() / sum()</div>
+        <div class="fn-desc"><code>prod()</code> 計算向量所有元素的乘積；<code>sum()</code> 計算加總</div>
+        <div class="fn-example"><span class="fn">prod</span>(<span class="fn">c</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>))   <span class="comment"># 24</span>
+<span class="fn">sum</span>(<span class="fn">c</span>(<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>))      <span class="comment"># 6</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== 16. 流程控制 ===== -->
+  <section id="s16">
+    <div class="section-header">
+      <div class="section-icon s6">🔄</div>
+      流程控制
+    </div>
+    <div class="fn-grid">
+
+      <div class="fn-card">
+        <div class="fn-name">for () {}</div>
+        <div class="fn-desc">重複執行指定次數的迴圈，常用於模擬抽樣。<code>j in 1:i</code> 設定迭代範圍</div>
+        <div class="fn-example"><span class="kw">for</span> (j <span class="kw">in</span> <span class="num">1</span>:<span class="num">10000</span>) {
+  result[j, ] <span class="kw">&lt;-</span> <span class="fn">sample</span>(pa, n, <span class="kw">TRUE</span>)
+}</div>
+      </div>
+
+      <div class="fn-card">
+        <div class="fn-name">if () {} else {}</div>
+        <div class="fn-desc">條件式執行，常用於套件安裝判斷（<code>if(!require(...))</code>）</div>
+        <div class="fn-example"><span class="kw">if</span> (!<span class="fn">require</span>(<span class="str">"ggplot2"</span>)) {
+  <span class="fn">install.packages</span>(<span class="str">"ggplot2"</span>)
+}
+<span class="fn">library</span>(ggplot2)</div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <p>整理自次級資料分析與量化研究課堂語法｜2026 · 依據個人課堂檔案產出</p>
+  </footer>
+
+</div>
+</body>
+</html>
